@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app-container">
+    <div id="app-container" class="landing-active">
         <!-- 1. Left Sidebar: Document Management & Categorization -->
         <aside id="sidebar">
             <div class="sidebar-header">
@@ -68,8 +68,56 @@
             </section>
         </aside>
 
-        <!-- 2. Right Content Area: Main Chat UI -->
         <main id="chat-container">
+            <!-- Centered Landing Hero (Reference Card Design) -->
+            <div id="landing-hero">
+                <div class="landing-card">
+                    <!-- Brand Lockup -->
+                    <div class="brand-lockup">
+                        <div class="brand-mark">
+                            <span class="brand-sle">SLE</span>
+                            <span class="brand-dot"></span>
+                            <span class="brand-name">슬기짜기</span>
+                        </div>
+                        <div class="brand-divider"></div>
+                        <div class="brand-descriptor">
+                            <i class="fa-solid fa-sparkles"></i>
+                            <span>AI Regulation Agent</span>
+                        </div>
+                    </div>
+                    
+                    <h1 class="landing-title">사내 규정에 대해<br>물어보세요</h1>
+                    <p class="landing-subtitle">인공지능 에이전트가 사내 규정에서 관련 조항과<br>탐색 경로를 정확하게 안내해 드립니다.</p>
+                    
+                    <div class="landing-prompt-box">
+                        <textarea id="landing-textarea" placeholder="육아휴직 신청 기간과 조건이 어떻게 되나요? 또는 연차 규정에 대해 알려주세요..."></textarea>
+                        
+                        <div class="landing-prompt-actions">
+                            <div class="prompt-left-actions">
+                                <button type="button" class="prompt-action-btn btn-upload-trigger" title="문서 업로드">
+                                    <i class="fa-solid fa-paperclip"></i>
+                                    <span>문서 업로드</span>
+                                </button>
+                                <button type="button" class="prompt-action-btn btn-analyze-trigger" title="카테고리 초안 분석">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                    <span>카테고리 분석</span>
+                                </button>
+                            </div>
+                            <button type="button" class="prompt-send-btn" id="btn-landing-send">
+                                <span>질문하기</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="landing-suggestions">
+                    <button type="button" class="suggestion-chip" data-query="육아휴직 신청 조건과 서류가 무엇인가요?">👶 육아휴직 조건</button>
+                    <button type="button" class="suggestion-chip" data-query="연차 발생 기준과 부여 일수가 어떻게 되나요?">📅 연차 부여 기준</button>
+                    <button type="button" class="suggestion-chip" data-query="병가 및 경조사 휴가 규정을 알려주세요.">병원/경조사 휴가</button>
+                </div>
+            </div>
+
             <!-- Header Status -->
             <header id="chat-header">
                 <div class="header-left">
@@ -111,6 +159,9 @@
             <!-- Chat Form Input Area -->
             <footer id="chat-footer">
                 <form id="chat-form" class="chat-form">
+                    <button type="button" id="btn-input-upload" class="btn-input-action" title="문서 업로드">
+                        <i class="fa-solid fa-paperclip"></i>
+                    </button>
                     <input type="text" id="query-input" placeholder="육아휴직 신청 기간과 조건이 어떻게 되나요?" autocomplete="off" required>
                     <button type="submit" id="btn-send" class="btn btn-send-icon">
                         <i class="fa-solid fa-paper-plane"></i>

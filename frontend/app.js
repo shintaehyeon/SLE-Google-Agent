@@ -54,6 +54,60 @@ document.addEventListener('DOMContentLoaded', () => {
     btnResetChat.addEventListener('click', resetChat);
     chatForm.addEventListener('submit', handleQuerySubmit);
 
+    // Input Upload Button Event
+    const btnInputUpload = document.getElementById('btn-input-upload');
+    if (btnInputUpload) {
+        btnInputUpload.addEventListener('click', () => fileInput.click());
+    }
+
+    // Suggestion Chips Click Event
+    document.querySelectorAll('.suggestion-chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            const query = e.currentTarget.getAttribute('data-query');
+            if (query) {
+                queryInput.value = query;
+                // Dispatch submit event on form
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+    });
+
+    // Landing Card Textarea Send Event
+    const btnLandingSend = document.getElementById('btn-landing-send');
+    const landingTextarea = document.getElementById('landing-textarea');
+    if (btnLandingSend && landingTextarea) {
+        btnLandingSend.addEventListener('click', () => {
+            const query = landingTextarea.value.trim();
+            if (query) {
+                queryInput.value = query;
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        landingTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                btnLandingSend.click();
+            }
+        });
+    }
+
+    // Landing Card Action Buttons
+    document.querySelectorAll('.btn-upload-trigger').forEach(btn => {
+        btn.addEventListener('click', () => fileInput.click());
+    });
+
+    document.querySelectorAll('.btn-analyze-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+            exitLandingMode();
+            if (uploadedFiles.length > 0) {
+                analyzeCategories();
+            } else {
+                addBotMessage("카테고리를 분석하려면 먼저 사내 규정 문서를 업로드해 주세요!");
+            }
+        });
+    });
+
     // Modal Events
     modalClose.addEventListener('click', closeModal);
     btnModalCancel.addEventListener('click', closeModal);
@@ -62,6 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load existing categories on startup (if any)
     checkExistingCategories();
 });
+
+// --- Exit Landing Mode Transition ---
+function exitLandingMode() {
+    const container = document.getElementById('app-container');
+    if (container && container.classList.contains('landing-active')) {
+        container.classList.remove('landing-active');
+        
+        // Hide landing hero after transition finishes
+        setTimeout(() => {
+            const landingHero = document.getElementById('landing-hero');
+            if (landingHero) {
+                landingHero.style.display = 'none';
+            }
+        }, 600);
+    }
+}
 
 // --- 2. File Upload Management ---
 function handleDrop(e) {
@@ -78,6 +148,7 @@ function handleFileSelect(e) {
 async function uploadFiles(files) {
     if (files.length === 0) return;
 
+    exitLandingMode();
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
         formData.append('files', files[i]);
@@ -352,6 +423,8 @@ async function handleQuerySubmit(e) {
     e.preventDefault();
     const question = queryInput.value.trim();
     if (!question) return;
+
+    exitLandingMode();
 
     // User Message 추가
     addUserMessage(question);
